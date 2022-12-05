@@ -46,28 +46,6 @@ class Item(BaseModel):
 	sentence_type: str ## question, answer..
 	session_id: str
 
-@app.get("/")
-async def root():
-	return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-	return {"message": f"Hello {name}"}
-
-@app.get("/items/")
-async def read_item(item: Item):
-	item_dict=item
-	return item_dict
-
-## 테스트 주소
-# http://127.0.0.1:8000/question?head=head_content1&company_id=빵집1&datetime=2022-12-02%2017:34:32&sentence=오픈시간%20보여줘&sentence_type=text&session_id=123
-@app.get("/question")
-async def call_test(head: Optional[str]=None,company_id: Optional[str]=None,
-					datetime: Optional[str]=None, sentence: Optional[str]=None, sentence_type: Optional[str]=None,session_id: Optional[str]=None ):
-	return {"message": pipeline_test(head,company_id,datetime,sentence,sentence_type,session_id)}
-
-
 def pipeline_test(*args):
 	print("- 입력된 파라미터들: {}\n".format(args))
 	# test1 = channel_message_module.MESSAGE_DATA("head content1", "빵집1", "2022-12-02 17:34:32", "오픈시간 보여줘", "text","123")
@@ -99,6 +77,36 @@ def pipeline_test(*args):
 	result=json.dumps({"answer":am.answer},ensure_ascii=False)
 	print(result)
 	return result
+
+
+@app.get("/")
+async def root():
+	return {"message": "Hello World"}
+
+
+@app.get("/hello/{name}")
+async def say_hello(name: str):
+	return {"message": f"Hello {name}"}
+
+@app.get("/items/")
+async def read_item(item: Item):
+	item_dict=item
+	return item_dict
+
+## 테스트 주소
+# http://127.0.0.1:8000/question?head=head_content1&company_id=빵집1&datetime=2022-12-02%2017:34:32&sentence=오픈시간%20보여줘&sentence_type=text&session_id=123
+@app.get("/question")
+async def call_test(head: Optional[str]=None,company_id: Optional[str]=None,
+					datetime: Optional[str]=None, sentence: Optional[str]=None, sentence_type: Optional[str]=None,session_id: Optional[str]=None ):
+	res=pipeline_test(head,company_id,datetime,sentence,sentence_type,session_id)
+	err=None
+
+	if res!=None:
+		return {"status":"clear","message":f"{res}"}
+	else:
+		return {"status":"fail","message":f"{err}"}
+
+
 
 
 '''
