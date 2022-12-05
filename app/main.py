@@ -29,11 +29,22 @@ from channel_interface import channel_interface_module
 from language_understand import language_understand_module
 from answer import answer_module
 
+
+from typing import Union
+from typing import Optional
+
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
 
 app = FastAPI()
 
+class Item(BaseModel):
+	head: Union[str, None] = None
+	company_id: str
+	datetime: str
+	sentence: str
+	sentence_type: str ## question, answer..
+	session_id: str
 
 @app.get("/")
 async def root():
@@ -44,31 +55,46 @@ async def root():
 async def say_hello(name: str):
 	return {"message": f"Hello {name}"}
 
+@app.get("/items/")
+async def read_item(item: Item):
+	item_dict=item
+	return item_dict
 
+## 테스트 주소
+# http://127.0.0.1:8000/question?head=head_content1&company_id=빵집1&datetime=2022-12-02%2017:34:32&sentence=오픈시간%20보여줘&sentence_type=text&session_id=123
 @app.get("/question")
-async def call_test():
-	return {"message": pipeline_test()}
+async def call_test(head: Optional[str]=None,company_id: Optional[str]=None,
+					datetime: Optional[str]=None, sentence: Optional[str]=None, sentence_type: Optional[str]=None,session_id: Optional[str]=None ):
+	return {"message": pipeline_test(head,company_id,datetime,sentence,sentence_type,session_id)}
 
 
-### 순서
-
-
-def pipeline_test():
-	test1 = channel_message_module.MESSAGE_DATA("head content1", "빵집1", "2022-12-02 17:34:32", "오픈시간 보여줘", "text",
-												"123")
+def pipeline_test(*args):
+	print("- 입력된 파라미터들: {}\n".format(args))
+	# test1 = channel_message_module.MESSAGE_DATA("head content1", "빵집1", "2022-12-02 17:34:32", "오픈시간 보여줘", "text","123")
+	test1 = channel_message_module.MESSAGE_DATA(args)
+	print(test1.__class__)
 	print(test1)
+	print()
 
 	msg1 = channel_interface_module.MESSAGE_DATA(test1.data_to_json_str())
+	print(msg1.__class__)
 	print(msg1)
+	print()
 
 	lum = language_understand_module.TEXT_ANALYTICS(msg1.company_id, msg1.sentence, msg1.sentence_type)  ## 테스트용
+	print(lum.__class__)
 	print(lum)
+	print()
 
 	iim = intend_inference_module.INTENT_ANALYTICS_TEXT(lum.company_id, lum.sentence, lum.sentence_type)  ## 테스트용
+	print(iim.__class__)
 	print(iim)
+	print()
 
 	am = answer_module.FIND_ANSWER(iim.intent)
+	print(am.__class__)
 	print(am)
+	print()
 
 	result=json.dumps({"answer":am.answer},ensure_ascii=False)
 	print(result)
