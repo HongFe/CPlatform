@@ -22,7 +22,7 @@ class MESSAGE_DATA:
         self.sentence = self.tmp_data['sentence']
         self.sentence_type = self.tmp_data['sentence_type']  ## question, answer..
         self.session_id= self.tmp_data['session_id']
-        self.g_session_id = self.create_session_id()  # 상담 단위로 안겹치도록 해야함
+        self.g_session_id = self.create_session_id()  # 상담 단위로 안겹치도록 해야함 -> session ID 통합관리 DB 필요할듯
 
     def __str__(self):
         return f"MESSAGE_DATA({self.head,self.company_id,self.datetime,self.sentence, self.sentence_type,self.session_id,self.g_session_id})"
