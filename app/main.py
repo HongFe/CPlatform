@@ -1,25 +1,75 @@
-from flask import Flask
-from flask import abort, redirect, url_for
-from flask import render_template
+# from fastapi import FastAPI
+#
+# app = FastAPI()
+#
+#
+# @app.get("/")
+# async def root():
+#     return {"message": "Hello World"}
+#
+#
+# @app.get("/hello/{name}")
+# async def say_hello(name: str):
+#     return {"message": f"Hello {name}"}
+#
+#
 
-app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return redirect(url_for('login'))
+### 순서
 
-@app.route('/login')
-def login():
-    abort(401)
-    #this_is_never_executed()
+'''
+channel_message
+test1=MESSAGE_DATA("head content1","빵집1","2022-12-02 17:34:32", "오픈시간 보여줘","QUESTION","123")
+print(test1.data_to_json())
 
-@app.route('/test')
-def test():
-    return
+channel_interface
+msg1=MESSAGE_DATA('{"head": "head content1","company_id":"빵집1" ,"datetime": "2022-12-02 17:34:32", "sentence": "오픈시간 보여줘", "sentence_type": "text", "session_id":"12345"}')
+print(msg1.msg_data)
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('page_not_found.html'), 404
+language_understand
+test1=TEXT_ANALYTICS('빵집1','위치알고싶어','text') ## 테스트용
+test1.company_id, test1.sentenc, test1.sentence_type
+
+intend_inference
+test1=INTENT_ANALYTICS_TEXT('빵집1','위치알고싶어','text') ## 테스트용
+test1.intent
+
+answer
+ans1=FIND_ANSWER('위치_문의')
+print(ans1.answer)
+'''
+
+import json
 
 if __name__ == '__main__':
-    app.run(debug=True)
+	if __package__ is None:
+		import sys
+		from os import path
+		print(path.dirname( path.dirname( path.abspath(__file__) ) ))
+		sys.path.append(path.dirname( path.dirname( path.abspath(__file__) ) ))
+		from channel_message import channel_message_module
+		from intend_inference import intend_inference_module
+		from channel_interface import channel_interface_module
+		from language_understand import language_understand_module
+		from answer import answer_module
+	else:
+		from .channel_message import channel_message_module
+		from .intend_inference import intend_inference_module
+		from .channel_interface import channel_interface_module
+		from .language_understand import language_understand_module
+		from .answer import answer_module
+
+test1=channel_message_module.MESSAGE_DATA("head content1","빵집1","2022-12-02 17:34:32", "오픈시간 보여줘","text","123")
+print(test1.data_to_json_str())
+
+msg1=channel_interface_module.MESSAGE_DATA(test1.data_to_json_str())
+print(msg1.print_data())
+
+lum=language_understand_module.TEXT_ANALYTICS(msg1.company_id, msg1.sentence, msg1.sentence_type) ## 테스트용
+print(lum.sentence)
+
+iim=intend_inference_module.INTENT_ANALYTICS_TEXT(lum.company_id, lum.sentence, lum.sentence_type) ## 테스트용
+print(iim.intent)
+
+am=answer_module.FIND_ANSWER(iim.intent)
+print(am.answer)
