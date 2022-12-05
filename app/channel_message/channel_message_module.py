@@ -18,6 +18,9 @@ class MESSAGE_DATA:
         self.msg_data['sentence_type']=msg_type ## question, answer..
         self.msg_data['session_id']=msg_session_id
 
+    def __str__(self):
+        return f"MESSAGE_DATA({self.msg_data})"
+
     def data_to_json_str(self):
         return json.dumps(self.msg_data)
 

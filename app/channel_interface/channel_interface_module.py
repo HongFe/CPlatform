@@ -24,6 +24,9 @@ class MESSAGE_DATA:
         self.session_id= self.tmp_data['session_id']
         self.g_session_id = self.create_session_id()  # 상담 단위로 안겹치도록 해야함
 
+    def __str__(self):
+        return f"MESSAGE_DATA({self.head,self.company_id,self.datetime,self.sentence, self.sentence_type,self.session_id,self.g_session_id})"
+
     # 전달받은 json데이터를 포맷에 맞추어 변형
     def json_to_data(self, str_msg):
         res = json.loads(str_msg)
@@ -46,4 +49,5 @@ if __name__ == '__main__':
     msg2 = MESSAGE_DATA(
         '{"head": "head content2", "company_id":"식당2","datetime": "2022-12-02 18:23:43", "sentence": "위치좀 알려줘", "sentence_type": "text", "session_id":"125"}')
     print(msg1.sentence)
+    print(msg1)
 '''================================================================'''

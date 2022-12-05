@@ -15,6 +15,9 @@ class INTENT_ANALYTICS:
     def __init__(self,company_id, sentence, sentence_type):
         self.intent=self.inference_intent(company_id, sentence)
 
+    def __str__(self):
+        return f"INTENT_ANALYTICS({self.intent})"
+
     def inference_intent(self, company_id, sentence):
         # TODO: 회사ID기준 의도 찾기
         return None ## 테스트용
@@ -33,6 +36,7 @@ class INTENT_ANALYTICS_TEXT(INTENT_ANALYTICS):
 if __name__ == '__main__':
     test1=INTENT_ANALYTICS_TEXT('빵집1','위치알고싶어','text') ## 테스트용
     print(test1.intent)
+    print(test1)
 
 
 '''================================================================'''

@@ -20,6 +20,9 @@ class TEXT_ANALYTICS:
         elif sentence_type=='voice':
             self.sentence =self.pre_handling_voice(sentence)
 
+    def __str__(self):
+        return f"TEXT_ANALYTICS({self.company_id,self.sentence,self.sentence_type}"
+
     def pre_handling_text(self,sentence):
         ## 문장 가공 불필요시 X
         sentence='[수정됨]'+sentence
@@ -34,6 +37,7 @@ class TEXT_ANALYTICS:
 if __name__ == '__main__':
     test1=TEXT_ANALYTICS('빵집1','위치알고싶어','text') ## 테스트용
     print(test1.sentence)
+    print(test1)
 
 
 '''================================================================'''
