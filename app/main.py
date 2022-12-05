@@ -16,31 +16,6 @@
 
 
 ### 순서
-
-'''
-channel_message
-test1=MESSAGE_DATA("head content1","빵집1","2022-12-02 17:34:32", "오픈시간 보여줘","QUESTION","123")
-print(test1.data_to_json())
-
-channel_interface
-msg1=MESSAGE_DATA('{"head": "head content1","company_id":"빵집1" ,"datetime": "2022-12-02 17:34:32", "sentence": "오픈시간 보여줘", "sentence_type": "text", "session_id":"12345"}')
-print(msg1.msg_data)
-
-language_understand
-test1=TEXT_ANALYTICS('빵집1','위치알고싶어','text') ## 테스트용
-test1.company_id, test1.sentenc, test1.sentence_type
-
-intend_inference
-test1=INTENT_ANALYTICS_TEXT('빵집1','위치알고싶어','text') ## 테스트용
-test1.intent
-
-answer
-ans1=FIND_ANSWER('위치_문의')
-print(ans1.answer)
-'''
-
-import json
-
 if __name__ == '__main__':
 	if __package__ is None:
 		import sys
@@ -73,3 +48,26 @@ print(iim.intent)
 
 am=answer_module.FIND_ANSWER(iim.intent)
 print(am.answer)
+
+
+'''
+channel_message
+test1=MESSAGE_DATA("head content1","빵집1","2022-12-02 17:34:32", "오픈시간 보여줘","QUESTION","123")
+print(test1.data_to_json())
+
+channel_interface
+msg1=MESSAGE_DATA('{"head": "head content1","company_id":"빵집1" ,"datetime": "2022-12-02 17:34:32", "sentence": "오픈시간 보여줘", "sentence_type": "text", "session_id":"12345"}')
+print(msg1.msg_data)
+
+language_understand
+test1=TEXT_ANALYTICS('빵집1','위치알고싶어','text') ## 테스트용
+test1.company_id, test1.sentenc, test1.sentence_type
+
+intend_inference
+test1=INTENT_ANALYTICS_TEXT('빵집1','위치알고싶어','text') ## 테스트용
+test1.intent
+
+answer
+ans1=FIND_ANSWER('위치_문의')
+print(ans1.answer)
+'''
