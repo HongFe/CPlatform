@@ -1,22 +1,5 @@
 #-*- encode:UTF-8 -*-
 
-# if __name__ == '__main__':
-# 	if __package__ is None:
-# 		import sys
-# 		from os import path
-# 		print(path.dirname( path.dirname( path.abspath(__file__) ) ))
-# 		sys.path.append(path.dirname( path.dirname( path.abspath(__file__) ) ))
-# 		from channel_message import channel_message_module
-# 		from intend_inference import intend_inference_module
-# 		from channel_interface import channel_interface_module
-# 		from language_understand import language_understand_module
-# 		from answer import answer_module
-# 	else:
-# 		from .channel_message import channel_message_module
-# 		from .intend_inference import intend_inference_module
-# 		from .channel_interface import channel_interface_module
-# 		from .language_understand import language_understand_module
-# 		from .answer import answer_module
 import json
 from datetime import datetime
 import sys
@@ -48,7 +31,6 @@ class Item(BaseModel):
 	session_id: str
 
 
-
 @app.get("/")
 async def root():
 	return {"message": "Hello World"}
@@ -67,14 +49,10 @@ async def read_item(item: Item):
 @app.get("/question")
 async def call_test(head: Optional[str]=None,company_id: Optional[str]=None,
 					channel_datetiem: Optional[str]=None, sentence: Optional[str]=None, sentence_type: Optional[str]=None,session_id: Optional[str]=None ):
-
 	# channel_datetiem은 채널에서 보내주는 시간정보이고, start_datetime은 현재 시스템에서 전달받은 시간
 	start_datetime=str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')) ## 날짜 다시 셋팅
-
 	res=pipeline_test(head,company_id,start_datetime,sentence,sentence_type,session_id)
-
 	err="Error! Some..."
-
 	if res!=None:
 		return {"status":"clear","message":f"{res}"}
 	else:

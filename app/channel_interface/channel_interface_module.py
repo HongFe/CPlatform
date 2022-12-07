@@ -10,6 +10,9 @@ import random
 - TO
     - 전달받은 데이터를 메시징 시스템(현재 없으니 언어이해로 전달)
 '''
+##### DB
+
+
 
 
 class MESSAGE_DATA:
