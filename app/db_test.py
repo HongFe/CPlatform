@@ -5,13 +5,15 @@ from db_handler import DB_HANDLER
 
 tb_name_list = ['X_USER_TB','X_COMPANY_TB','X_USER_COMPANY_TB','X_CHANNEL_TB','X_INTENT_TB','X_ANSWER_TB','X_QUESTION_TB']
 
-USER_TB='X_USER_TB'
-COMPANY_TB='X_COMPANY_TB'
-USER_COMAPNY_TB='X_USER_COMPANY_TB'
-CHANNEL_TB='X_CHANNEL_TB'
-INTENT_TB='X_INTENT_TB'
-ANSWER_TB='X_ANSWER_TB'
-QUESTION_TB='X_QUESTION_TB'
+import _property
+
+USER_TB=_property.USER_TB
+COMPANY_TB=_property.COMPANY_TB
+USER_COMPANY_TB=_property.USER_COMPANY_TB
+CHANNEL_TB=_property.CHANNEL_TB
+INTENT_TB=_property.INTENT_TB
+ANSWER_TB=_property.ANSWER_TB
+QUESTION_TB=_property.QUESTION_TB
 
 create_query_list =[
     "CREATE TABLE {} (\
@@ -34,7 +36,7 @@ create_query_list =[
              user_name_fk TEXT,\
              company_id_fk TEXT,\
              company_name_fk TEXT\
-             );".format(USER_COMAPNY_TB,USER_TB,USER_TB,COMPANY_TB,COMPANY_TB),
+             );".format(USER_COMPANY_TB,USER_TB,USER_TB,COMPANY_TB,COMPANY_TB),
              # user_id_fk TEXT,\
              # FOREIGN KEY (user_id_fk)\
              #    REFERENCES {} (id)\
@@ -126,33 +128,33 @@ values_list = [
         ('ServiceAdmin','영심이key','영심이','화리화게트key','화리화게트'),
         ('Admin','루피key','루피','은평식당key','은평식당'),
     ),
-    ( # CHANNEL_TB
-        ('카카오톡_챗봇', 'text', '화리화게트거key....', '화리화게트'),
-        ('카카오톡_챗봇', 'text', '은평식당key....', '은평식당')
+    ( # CHANNEL_TB 화리화게트id 1, 은평식당id 2
+        ('카카오톡_챗봇', 'text', '1', '화리화게트'),
+        ('카카오톡_챗봇', 'text', '2', '은평식당')
     ),
-    ( # INTENT_TB
-        ('[위치_문의]', '화리화게트거id....'),
-        ('[오픈시간_문의]', '화리화게트거id....'),
-        ('[위치문의]', '은평식당id....'),
-        ('[오픈시간_문의]', '은평식당id....')
+    ( # INTENT_TB 화리화게트id 1 은평식당id 2
+        ('[화리화게트_위치_문의]', '1'),
+        ('[화리화게트_오픈시간_문의]', '1'),
+        ('[은평식당_위치_문의]', '2'),
+        ('[은평식당_오픈시간_문의]', '2')
     ),
-    ( # ANSWER
-        ('위치질문답변...', 'text', '[위치_문의] id'),
-        ('오픈시간답변...', 'text', '[오픈시간_문의] id'),
-        ('위치질문답변...', 'text', '[위치문의] id'),
-        ('오픈시간답변...', 'text', '[오픈시간_문의] id')
+    ( # ANSWER 화리화게트 [위치_문의] id 1, 화리화게트 [오픈시간_문의] id 2, 은평식당 [위치문의] id 3, 은평식당 [오픈시간_문의] id 4
+        ('화리화게트 위치질문답변...', 'text', '1'),
+        ('화리화게트 오픈시간답변...', 'text', '2'),
+        ('은평식당 위치질문답변...', 'text', '3'),
+        ('은평식당 오픈시간답변...', 'text', '4')
     ),
-    ( # QUESTION
-        ('어딨어', 'text', '[위치질문답변] id'),
-        ('오픈시간 알려줘', 'text', '[오픈시간답변] id'),
-        ('어디 입니까', 'text', '[위치질문답변] id'),
-        ('언제 열어요', 'text', '[오픈시간답변] id')
+    ( # QUESTION  '화리화게트 위치질문답변...' id 1, '화리화게트 오픈시간답변...' id 2, '은평식당 위치질문답변...'ㄴ id 3, '은평식당 오픈시간답변...' id 4
+        ('어딨어', 'text', '1'),
+        ('오픈시간 알려줘', 'text', '2'),
+        ('어디 입니까', 'text', '3'),
+        ('언제 열어요', 'text', '4')
     )
     ]
 insert_query_list = [
     "INSERT INTO {} (user_id, password, name, phonenumber, email) VALUES (?,?,?,?,?);".format(USER_TB),
     "INSERT INTO {} (name, phonenumber, email) VALUES (?,?,?);".format(COMPANY_TB),
-    "INSERT INTO {} (role,user_id_fk,user_name_fk,company_id_fk,company_name_fk) VALUES (?,?,?,?,?);".format(USER_COMAPNY_TB),
+    "INSERT INTO {} (role,user_id_fk,user_name_fk,company_id_fk,company_name_fk) VALUES (?,?,?,?,?);".format(USER_COMPANY_TB),
     "INSERT INTO {} (name, type, company_id_fk, company_name_fk) VALUES (?,?,?,?);".format(CHANNEL_TB),
     "INSERT INTO {} (intent, company_id_fk) VALUES (?,?);".format(INTENT_TB),
     "INSERT INTO {} (answer, type, intent_id_fk) VALUES (?,?,?);".format(ANSWER_TB),
@@ -166,6 +168,7 @@ if __name__ == "__main__":
 
     for tb_name, create_query, insert_query, values in zip(tb_name_list, create_query_list, insert_query_list, values_list):
         db.set_tb_for_test(tb_name, create_query, insert_query, values)
+
 
 
 

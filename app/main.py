@@ -62,32 +62,27 @@ def pipeline_test(*args):
 	print("- 입력된 파라미터들: {}\n".format(args))
 	# test1 = channel_message_module.MESSAGE_DATA("head content1", "빵집1", "2022-12-02 17:34:32", "오픈시간 보여줘", "text","123")
 	test1 = channel_message_module.MESSAGE_DATA(args)
-	print(test1.__class__)
-	print(test1)
-	print()
+	print('[실행된 클래스]',test1.__class__)
+	print('[전달할 값]',test1)
 
 	msg1 = channel_interface_module.MESSAGE_DATA(test1.data_to_json_str())
-	print(msg1.__class__)
-	print(msg1)
-	print()
+	print('[실행된 클래스]',msg1.__class__)
+	print('[전달할 값]',msg1)
 
 	lum = language_understand_module.TEXT_ANALYTICS(msg1.company_id, msg1.sentence, msg1.sentence_type)  ## 테스트용
-	print(lum.__class__)
-	print(lum)
-	print()
+	print('[실행된 클래스]',lum.__class__)
+	print('[전달할 값]',lum)
 
 	iim = intend_inference_module.INTENT_ANALYTICS_TEXT(lum.company_id, lum.sentence, lum.sentence_type)  ## 테스트용
-	print(iim.__class__)
-	print(iim)
-	print()
+	print('[실행된 클래스]',iim.__class__)
+	print('[전달할 값]',iim)
 
 	am = answer_module.FIND_ANSWER(iim.intent)
-	print(am.__class__)
-	print(am)
-	print()
+	print('[실행된 클래스]',am.__class__)
+	print('[전달할 값]',am)
 
 	result=json.dumps({"g_session_id":msg1.g_session_id,"answer":am.answer},ensure_ascii=False)
-	print(result)
+	print('[최종 값]',result)
 
 	return result
 

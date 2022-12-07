@@ -1,10 +1,11 @@
 import sqlite3
 import sys
+import _property
 from sqlite3 import Error
 
 # https://www.daleseo.com/python-sqlite3/
 
-APP_DB = './app.db'
+APP_DB = _property.APP_DB_PATH
 LOG_DB = './log.db'
 MEM_DB = ':memory:'
 
@@ -24,22 +25,27 @@ class DB_HANDLER:
             con = sqlite3.connect(self.db_name)
             cur = con.cursor()
             cur.execute(query)  # ex) "CREATE TABLE PhoneBook(Name text, PhoneNum text);"
-            print("[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
+            print("\033[92m[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
         except Exception as e:
-            print("[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
+            print("\033[91m[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
         finally:
+            if cur:
+                cur.close()
             if con:
                 con.close()
+
 
     def create_tb(self, tb_name, query):
         try:
             con = sqlite3.connect(self.db_name)
             cur = con.cursor()
             cur.execute(query)  # ex) "CREATE TABLE PhoneBook(Name text, PhoneNum text);"
-            print("[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
+            print("\033[92m[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
         except Exception as e:
-            print("[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
+            print("\033[91m[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
         finally:
+            if cur:
+                cur.close()
             if con:
                 con.close()
 
@@ -48,16 +54,20 @@ class DB_HANDLER:
             con = sqlite3.connect(self.db_name)
             cur = con.cursor()
             cur.execute(query)  # ex) 'SELECT * FROM PhoneBook'
-            print('========================= [select data] ========================= ')
-            for row in cur.fetchall():
-                print(row)
-            print('========================= [select data] ========================= ')
-            print("[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
+            #print('========================= [select data] ========================= ')
+            data=cur.fetchall()
+            # for row in data:
+            #     print(row)
+            #print('========================= [select data] ========================= ')
+            print("\033[92m[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
         except Exception as e:
-            print("[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
+            print("\033[91m[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
         finally:
+            if cur:
+                cur.close()
             if con:
                 con.close()
+            return data
 
     def update_tb(self, tb_name, query):
         try:
@@ -65,10 +75,12 @@ class DB_HANDLER:
             cur = con.cursor()
             cur.execute(query)  # ex) "UPDATE '210227_test' SET name = ? WHERE id_num = ?", ('YB_수정', 4)
             con.commit()
-            print("[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
+            print("\033[92m[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
         except Exception as e:
-            print("[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
+            print("\033[91m[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
         finally:
+            if cur:
+                cur.close()
             if con:
                 con.close()
 
@@ -78,10 +90,12 @@ class DB_HANDLER:
             cur = con.cursor()
             cur.executemany(query, value_list)  # ex) "INSERT INTO PhoneBook Values('Derick', '010-1234-5678');"
             con.commit()
-            print("[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
+            print("\033[92m[{}] {} : Success".format(tb_name, sys._getframe().f_code.co_name))
         except Exception as e:
-            print("[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
+            print("\033[91m[{}] {} : error ({})".format(tb_name, sys._getframe().f_code.co_name, e))
         finally:
+            if cur:
+                cur.close()
             if con:
                 con.close()
 
